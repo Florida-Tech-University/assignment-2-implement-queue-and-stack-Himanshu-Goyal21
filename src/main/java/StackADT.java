@@ -1,21 +1,38 @@
-public interface StackADT<E> {
-    int size();
-    boolean isEmpty();
+import java.util.Objects;
 
-    /**
-     * Returns the top element without removing it.
-     * If empty, returns null.
-     */
-    E top();
+public class StackUsingQueue<E> implements StackADT<E> {
+    private final QueueADT<E> q;
 
-    /**
-     * Pushes an element onto the stack.
-     */
-    void push(E e);
+    public StackUsingQueue(int capacity) {
+        this.q = new ArrayQueue<>(capacity);
+    }
 
-    /**
-     * Pops and returns the top element.
-     * If empty, returns null.
-     */
-    E pop();
+    @Override
+    public int size() {
+        return q.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return q.isEmpty();
+    }
+
+    @Override
+    public E top() {
+        return q.first();
+    }
+
+    @Override
+    public void push(E e) {
+        Objects.requireNonNull(e, "Null elements are not supported in this assignment.");
+        q.enqueue(e);
+        for (int i = 0; i < q.size() - 1; i++) {
+            q.enqueue(q.dequeue());
+        }
+    }
+
+    @Override
+    public E pop() {
+        return q.dequeue();
+    }
 }
