@@ -62,3 +62,4 @@ public class ArrayQueue<E> implements QueueADT<E> {
         return "Queue(front=" + front + ", rear=" + rear + ", size=" + size() + ")";
     }
 }
+
