@@ -1,5 +1,4 @@
 import java.util.Objects;
-
 public class ArrayQueue<E> implements QueueADT<E> {
     private final E[] data;
     private int front = 0;
