@@ -49,6 +49,6 @@ public class ArrayQueue<E> implements QueueADT<E> {
         return answer;
     }
     int capacity() { 
-        return data.length - 1; 
+        return data.length - 1;
     }
 }
