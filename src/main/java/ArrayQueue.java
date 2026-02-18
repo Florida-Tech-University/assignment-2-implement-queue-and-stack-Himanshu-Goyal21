@@ -1,4 +1,6 @@
 import java.util.Objects;
+import java.util.Arrays;
+
 public class ArrayQueue<E> implements QueueADT<E> {
     private final E[] data;
     private int front = 0;
@@ -6,7 +8,8 @@ public class ArrayQueue<E> implements QueueADT<E> {
 
     @SuppressWarnings("unchecked")
     public ArrayQueue(int capacity) {
-        if (capacity <= 0) throw new IllegalArgumentException("capacity must be > 0");
+        if (capacity <= 0) throw new IllegalArgumentException("Capacity must be > 0");
+        // We add 1 because one slot is always left empty in a circular array
         this.data = (E[]) new Object[capacity + 1];
     }
 
@@ -17,23 +20,24 @@ public class ArrayQueue<E> implements QueueADT<E> {
 
     @Override
     public boolean isEmpty() {
-       return front == rear;
+        return front == rear;
     }
 
-    private boolean isFull() {
+    public boolean isFull() {
         return (rear + 1) % data.length == front;
     }
 
     @Override
     public E first() {
-        if (isEmpty()) return null;
-        return data[front];
+        return isEmpty() ? null : data[front];
     }
 
     @Override
     public void enqueue(E e) {
-        Objects.requireNonNull(e, "Null elements are not supported in this assignment.");
-        if (isFull()) throw new IllegalStateException("Queue is full");
+        Objects.requireNonNull(e, "Null elements are not supported.");
+        if (isFull()) {
+            throw new IllegalStateException("Queue is full");
+        }
         
         data[rear] = e;
         rear = (rear + 1) % data.length;
@@ -42,12 +46,19 @@ public class ArrayQueue<E> implements QueueADT<E> {
     @Override
     public E dequeue() {
         if (isEmpty()) return null;
+
         E answer = data[front];
-        data[front] = null; 
-        front = (front + 1) % data.length; // Move front past the removed element
+        data[front] = null; // Prevent memory leak (loitering)
+        front = (front + 1) % data.length;
         return answer;
     }
-    int capacity() { 
+
+    public int capacity() { 
         return data.length - 1; 
+    }
+
+    @Override
+    public String toString() {
+        return "Queue(front=" + front + ", rear=" + rear + ", size=" + size() + ")";
     }
 }
