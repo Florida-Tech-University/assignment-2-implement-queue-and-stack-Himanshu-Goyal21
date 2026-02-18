@@ -1,10 +1,9 @@
 import java.util.Objects;
 
 public class StackUsingQueue<E> implements StackADT<E> {
-    private final ArrayQueue<E> q; // Changed to ArrayQueue to access capacity()
+    private final ArrayQueue<E> q;
 
     public StackUsingQueue(int capacity) {
-        // The queue needs to be the same size as the stack's intended capacity
         this.q = new ArrayQueue<>(capacity);
     }
 
@@ -20,25 +19,22 @@ public class StackUsingQueue<E> implements StackADT<E> {
 
     @Override
     public E top() {
-        // In a stack, top() is the last element added.
-        // Because of our push rotation, this is the front of the queue.
         return q.first();
     }
 
     @Override
     public void push(E e) {
-        Objects.requireNonNull(e, "Null elements are not supported.");
+        Objects.requireNonNull(e, "Null elements are not supported in this assignment.");
         
-        // Manual check for full status since the Queue is our backing store
+        // Check if queue is full
         if (q.size() == q.capacity()) {
             throw new IllegalStateException("Stack is full");
         }
-
+        
         q.enqueue(e);
         
         // Rotate the queue so the newly added element is at the front
-        int rotations = q.size() - 1;
-        for (int i = 0; i < rotations; i++) {
+        for (int i = 0; i < q.size() - 1; i++) {
             q.enqueue(q.dequeue());
         }
     }
