@@ -1,5 +1,4 @@
 import java.util.Objects;
-
 public class StackUsingQueue<E> implements StackADT<E> {
     private final QueueADT<E> q;
 
