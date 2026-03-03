@@ -1,6 +1,7 @@
 import java.util.Objects;
 
 public class StackUsingQueue<E> implements StackADT<E> {
+
     private final ArrayQueue<E> q;
 
     public StackUsingQueue(int capacity) {
@@ -19,21 +20,20 @@ public class StackUsingQueue<E> implements StackADT<E> {
 
     @Override
     public E top() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is empty");
+        }
         return q.first();
     }
 
     @Override
     public void push(E e) {
-        Objects.requireNonNull(e, "Null elements are not supported in this assignment.");
-        
-        // Check if queue is full
-        if (q.size() == q.capacity()) {
-            throw new IllegalStateException("Stack is full");
-        }
-        
+        Objects.requireNonNull(e, "Null elements are not supported.");
+
+        // Let ArrayQueue throw if full
         q.enqueue(e);
-        
-        // Rotate the queue so the newly added element is at the front
+
+        // Rotate elements so new element becomes front
         for (int i = 0; i < q.size() - 1; i++) {
             q.enqueue(q.dequeue());
         }
@@ -41,7 +41,9 @@ public class StackUsingQueue<E> implements StackADT<E> {
 
     @Override
     public E pop() {
-        if (isEmpty()) return null;
+        if (isEmpty()) {
+            throw new IllegalStateException("Stack is empty");
+        }
         return q.dequeue();
     }
 }
